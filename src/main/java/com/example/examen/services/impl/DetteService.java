@@ -39,11 +39,6 @@ public class DetteService implements IDetteService {
     }
 
     @Override
-    public Dette create(Dette objet) {
-        return detteRepository.save(objet);
-    }
-
-    @Override
     public Dette getById(Long id) {
         return detteRepository.findById(id).orElse(null);
     }
@@ -53,4 +48,8 @@ public class DetteService implements IDetteService {
         return detteRepository.findAll();
     }
 
+    @Override
+    public List<Dette> findByClientTelephone(String telephone) {
+        return detteRepository.findByClient_TelephoneContainsIgnoreCase(telephone);
+    }
 }

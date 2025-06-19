@@ -29,7 +29,7 @@ public class PaiementService implements IPaiementService {
                 .orElseThrow(() -> new RuntimeException("Dette not found"));
 
         Paiement paiement = new Paiement();
-        paiement.setMontantDette(dto.getMontant());
+        paiement.setMontant(dto.getMontant());
         paiement.setDate(dto.getDate());
         paiement.setDette(dette);
 
@@ -45,18 +45,17 @@ public class PaiementService implements IPaiementService {
     }
 
     @Override
-    public Paiement create(Paiement objet) {
-        return null;
-    }
-
-    @Override
-    public Paiement getById(Long id) {
-        return null;
-    }
-
-    @Override
     public List<Paiement> getAll() {
         return paiementRepository.findAll();
     }
 
+    @Override
+    public List<Paiement> findByClientTelephone(String telephone) {
+        return paiementRepository.findByDette_Client_TelephoneContainsIgnoreCase(telephone);
+    }
+
+    @Override
+    public List<Paiement> findByDetteNumero(Long detteId) {
+        return paiementRepository.findByDette_Id(detteId);
+    }
 }

@@ -22,6 +22,7 @@ public class DetteController implements IDetteController {
         this.detteService = detteService;
     }
 
+    @PostMapping
     public ResponseEntity<DetteResponseDTO> ajouterDette(@RequestBody @Valid DetteRequestDTO dto) {
         Dette dette = detteService.create(dto);
         DetteResponseDTO response = new DetteResponseDTO(
@@ -34,6 +35,7 @@ public class DetteController implements IDetteController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
     public ResponseEntity<List<DetteResponseDTO>> getAllDettes() {
         List<DetteResponseDTO> list = detteService.getAll().stream().map(
                 dette -> new DetteResponseDTO(
@@ -47,4 +49,17 @@ public class DetteController implements IDetteController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/client/{telephone}")
+    public ResponseEntity<List<DetteResponseDTO>> getDettesParTelephone(@PathVariable String telephone) {
+        List<DetteResponseDTO> list = detteService.findByClientTelephone(telephone).stream().map(
+                dette -> new DetteResponseDTO(
+                        dette.getId(),
+                        dette.getDate(),
+                        dette.getMontantDette(),
+                        dette.getMontantPaye(),
+                        dette.getMontantRestant()
+                )
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(list);
+    }
 }
